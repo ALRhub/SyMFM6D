@@ -98,18 +98,19 @@ python run.py --dataset ycb --workers 4 --run_name YcbVideo_3views_evaluation --
     --multi_view --set_views 3  --checkpoint YcbVideo_3views_checkpoint.ckpt 
 ```
 
+
 ## Runtime
 
 We provide the runtime of our SyMFM6D approach for different number of views 
 in the following table:
 
-| Number of Views | Network Forward | Pose Estimation |     Total     |
-| :-------------: | --------------: |---------------: |-------------: |
-|       1         |      46 ms      |     14 ms       |      60 ms    |
-|       2         |      92 ms      |     19 ms       |     111 ms    |
-|       3         |     138 ms      |     25 ms       |     163 ms    |
-|       4         |     184 ms      |     30 ms       |     214 ms    |
-|       5         |     230 ms      |     36 ms       |     266 ms    |
+| Number of Views | Network Forward Time | Pose Estimation Time | Total Time |
+| :-------------: | -------------------: |--------------------: |----------: |
+|       1         |         46 ms        |         14 ms        |    60 ms   |
+|       2         |         92 ms        |         19 ms        |   111 ms   |
+|       3         |        138 ms        |         25 ms        |   163 ms   |
+|       4         |        184 ms        |         30 ms        |   214 ms   |
+|       5         |        230 ms        |         36 ms        |   266 ms   |
 
 The network forward time includes the 3D keypoint offset prediction, 
 the center point offset prediction, and the prediction of semantic labels.
@@ -118,6 +119,50 @@ algorithm and the least-squares fitting for computing the 6D pose of a single ob
 Please note that the usage of the symmetry-aware loss does increase the training time 
 slightly, but it does not affect the runtime. 
 The runtimes are measured using a single GPU of type NVIDIA Tesla V100 with 32GB of memory.
+
+
+
+## Network Parameters
+
+In the following, we show the tensor shapes of our network architecture: 
+
+| Layer | CNN Tensor Shape | PCN Tensor Shape | 
+| :---: | :--------------: | :--------------: |       
+|   1   |  H/4, W/4,   64  | N, 8             |
+|   2   |  H/4, W/4,   64  | N/4, 64          |
+|   3   |  H/8, W/8,  128  | N/16, 128        |
+|   4   |  H/8, W/8,  512  | N/64, 256        | 
+|   5   |  H/8, W/8, 1024  | N/256, 512       |
+|   6   |  H/4, W/4,  256  | N/64, 256        |
+|   7   |  H/2, W/2,   64  | N/16, 128        |
+|   8   |  H/2, W/2,   64  | N/4, 64          |
+ 
+The multi-layer perceptrons (MLP) of our multi-directional fusion modules 
+have the following channel sizes, where c<sub>i</sub> and c<sub>p</sub> denote 
+the channel sizes of the image and point features of the respective layer:
+
+|       MLP       |         Channel Sizes         | 
+| :-------------: | :---------------------------: |    
+| MLP<sub>i</sub> |  c<sub>i</sub>, c<sub>p</sub> |
+| MLP<sub>fi</sub>| 2c<sub>p</sub>, c<sub>p</sub> |
+| MLP<sub>p</sub> |  c<sub>p</sub>, c<sub>i</sub> |
+| MLP<sub>fp</sub>| 2c<sub>i</sub>, c<sub>i</sub> |
+     
+The channel sizes of the MLPs in the second stage of our network in Fig. 2 of our paper
+are as followed:
+
+|           MLP          |                         Channel Sizes                          | 
+| :--------------------: | :------------------------------------------------------------: |    
+| Keypoint Detection     | c<sub>i</sub> + c<sub>p</sub>, 128, 128, 128, n<sub>cls</sub>  |
+| Center Point Detection | c<sub>i</sub> + c<sub>p</sub>, 128, 128, 128, 3n<sub>kps</sub> |
+| Semantic Segmentation  | c<sub>i</sub> + c<sub>p</sub>, 128, 128, 128, 3                |
+
+For the output of the network architecture we set c<sub>i</sub> = c<sub>p</sub> = 64. 
+n<sub>cls</sub> is the number of classes in the used dataset, 
+e.g. n<sub>cls</sub> = 22 for YCB-Video and SymMovCam.
+n<sub>kps</sub> is the number of keypoint per object, which we set to eight.
+
+
 
 ## Citation
 If you use this work please cite
