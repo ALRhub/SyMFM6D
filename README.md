@@ -98,3 +98,33 @@ python run.py --dataset ycb --workers 4 --run_name YcbVideo_3views_evaluation --
     --multi_view --set_views 3  --checkpoint YcbVideo_3views_checkpoint.ckpt 
 ```
 
+## Runtime
+
+We provide the runtime of our SyMFM6D approach for different number of views 
+in the following table:
+
+| Number of Views | Network Forward | Pose Estimation |     Total     |
+| :-------------: | --------------: |---------------: |-------------: |
+|       1         |      46 ms      |     14 ms       |      60 ms    |
+|       2         |      92 ms      |     19 ms       |     111 ms    |
+|       3         |     138 ms      |     25 ms       |     163 ms    |
+|       4         |     184 ms      |     30 ms       |     214 ms    |
+|       5         |     230 ms      |     36 ms       |     266 ms    |
+
+The network forward time includes the 3D keypoint offset prediction, 
+the center point offset prediction, and the prediction of semantic labels.
+The pose estimation time represents the time for applying the mean shift clustering 
+algorithm and the least-squares fitting for computing the 6D pose of a single object. 
+Please note that the usage of the symmetry-aware loss does increase the training time 
+slightly, but it does not affect the runtime. 
+The runtimes are measured using a single GPU of type NVIDIA Tesla V100 with 32GB of memory.
+
+## Citation
+If you use this work please cite
+```
+@article{Duffhauss_2023,
+    author    = {Duffhauss, Fabian and Koch, Sebastian and Ziesche, Hanna and Vien, Ngo Anh and Neumann, Gerhard},
+    title     = {SyMFM6D: Symmetry-aware Multi-directional Fusion for Multi-View 6D Object Pose Estimation},
+    year      = {2023},
+}
+```
