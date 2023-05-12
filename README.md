@@ -105,7 +105,7 @@ We provide the runtime of our SyMFM6D approach for different number of views
 in the following table:
 
 | Number of Views | Network Forward Time | Pose Estimation Time | Total Time |
-| :-------------: | -------------------: |--------------------: |----------: |
+| :-------------: | :------------------: |:-------------------: |:---------: |
 |       1         |         46 ms        |         14 ms        |    60 ms   |
 |       2         |         92 ms        |         19 ms        |   111 ms   |
 |       3         |        138 ms        |         25 ms        |   163 ms   |
@@ -160,7 +160,7 @@ are as followed:
 For the output of the network architecture we set c<sub>i</sub> = c<sub>p</sub> = 64. 
 n<sub>cls</sub> is the number of classes in the used dataset, 
 e.g. n<sub>cls</sub> = 22 for YCB-Video and SymMovCam.
-n<sub>kps</sub> is the number of keypoint per object, which we set to eight.
+n<sub>kps</sub> is the number of keypoints per object, which we set to eight.
 
 
 
