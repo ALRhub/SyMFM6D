@@ -32,7 +32,7 @@ Please cite the paper when reporting, reproducing, or extending the results.
     ```
 
 ## Datasets and Models
-- The YCB-Video dataset ca be downloaded 
+- The YCB-Video dataset can be downloaded 
 [here](https://drive.google.com/file/d/1if4VoEXNx9W3XCn0Y7Fp15B4GpcYbyYi/view?usp=sharing).
 - The MV-YCB SymMovCam dataset can be downloaded 
 [here](https://drive.google.com/file/d/16p0keTKr_UQnu7wHS8AgFIFe1GGS1qet/view?usp=share_link). 
@@ -66,26 +66,26 @@ In the following, we give a few examples how to train models with our SyMFM6D ap
 ### Single-View Training on YCB-Video
 ```shell script
 python run.py --dataset ycb --workers 4 --run_name YcbVideo_1view_training --epochs 40 --batch_size 9 \
-    --sift_fps_kps --symmetry 1 --n_rot_sym 16
+    --sift_fps_kps 1 --symmetry 1 --n_rot_sym 16
 ```
 
 ### Multi-View Training on YCB-Video
 ```shell script
 python run.py --dataset ycb --workers 4 --run_name YcbVideo_3views_training --epochs 10 --batch_size 3 \
-    --sift_fps_kps --symmetry 1 --n_rot_sym 16 --multi_view 1 --set_views 3  --checkpoint single_view_checkpoint.ckpt \
+    --sift_fps_kps 1 --symmetry 1 --n_rot_sym 16 --multi_view 1 --set_views 3  --checkpoint single_view_checkpoint.ckpt \
     --lr_scheduler reduce --lr 7e-05
 ```
 
 ### Single-View Training on MV-YCB SymMovCam
 ```shell script
 python run.py --dataset SymMovCam --workers 4 --run_name MvYcbSymMovCam_1view_training --epochs 60 \
-    --batch_size 3 --sift_fps_kps --symmetry 1 --n_rot_sym 16
+    --batch_size 3 --sift_fps_kps 1 --symmetry 1 --n_rot_sym 16
 ```
 
 ### Multi-View Training on MV-YCB SymMovCam
 ```shell script
 python run.py --dataset SymMovCam --workers 4 --run_name MvYcbSymMovCam_1view_training --epochs 60 \
-    --batch_size 3 --sift_fps_kps --symmetry 1 --n_rot_sym 16 --multi_view 1 --set_views 3
+    --batch_size 3 --sift_fps_kps 1 --symmetry 1 --n_rot_sym 16 --multi_view 1 --set_views 3
 ```
 
 
@@ -94,8 +94,8 @@ python run.py --dataset SymMovCam --workers 4 --run_name MvYcbSymMovCam_1view_tr
 A model can be evaluated by specifying a checkpoint using `--checkpoint <name_of_checkpoint>` and by adding the 
 argument `--test`, e.g.
 ```shell script
-python run.py --dataset ycb --workers 4 --run_name YcbVideo_3views_evaluation --batch_size 3 --sift_fps_kps \
-    --multi_view --set_views 3  --checkpoint YcbVideo_3views_checkpoint.ckpt 
+python run.py --dataset ycb --workers 4 --run_name YcbVideo_3views_evaluation --batch_size 3 --sift_fps_kps 1 \
+    --multi_view 1 --set_views 3 --checkpoint YcbVideo_3views_checkpoint.ckpt 
 ```
 
 
